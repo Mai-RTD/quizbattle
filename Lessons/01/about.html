@@ -1,0 +1,552 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Май — моя визитка</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at 20% 20%, #00d9ff55, transparent 30%),
+                radial-gradient(circle at 80% 20%, #9d4edd55, transparent 30%),
+                linear-gradient(135deg, #10152f, #211344, #101a38);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: auto;
+        }
+
+        /* ГЛАВНЫЙ ЭКРАН */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 30px;
+        }
+
+        .hero-content {
+            animation: появление 1s ease;
+        }
+
+        .hello {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 50px;
+            background: #ffffff15;
+            border: 1px solid #ffffff25;
+            color: #7eeeff;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: clamp(70px, 15vw, 160px);
+            line-height: 1;
+            margin-bottom: 25px;
+            font-weight: 900;
+            letter-spacing: -5px;
+
+            background: linear-gradient(
+                90deg,
+                #ffffff,
+                #6ee7f9,
+                #c084fc
+            );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            max-width: 650px;
+            margin: auto;
+            font-size: clamp(18px, 3vw, 25px);
+            line-height: 1.5;
+            color: #d7d9ed;
+        }
+
+        /* КНОПКА ВНИЗ */
+
+        .down-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-top: 40px;
+            padding: 16px 25px;
+
+            border-radius: 18px;
+
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+
+            background: linear-gradient(
+                135deg,
+                #00bcd4,
+                #7c3aed
+            );
+
+            box-shadow:
+                0 10px 30px #00d9ff33;
+
+            transition: 0.25s;
+        }
+
+        .down-button:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 15px 40px #9d4edd66;
+        }
+
+        .arrow {
+            font-size: 25px;
+            animation: стрелка 1.3s infinite;
+        }
+
+        /* СЕКЦИИ */
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: clamp(35px, 6vw, 55px);
+            margin-bottom: 35px;
+        }
+
+        .section-title span {
+            color: #6ee7f9;
+        }
+
+        /* ОБО МНЕ */
+
+        .about {
+            padding: 35px;
+            border-radius: 30px;
+
+            background: #ffffff12;
+            border: 1px solid #ffffff20;
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 20px 60px #00000033;
+        }
+
+        .about p {
+            font-size: 20px;
+            line-height: 1.7;
+            color: #e4e5f5;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .info-card {
+            padding: 20px;
+            border-radius: 20px;
+            background: #00000020;
+        }
+
+        .info-card small {
+            display: block;
+            color: #9da2c4;
+            margin-bottom: 7px;
+        }
+
+        .info-card strong {
+            font-size: 22px;
+        }
+
+        /* УВЛЕЧЕНИЯ */
+
+        .hobbies {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .hobby {
+            padding: 30px;
+            min-height: 220px;
+
+            border-radius: 27px;
+
+            background: #ffffff12;
+            border: 1px solid #ffffff20;
+
+            backdrop-filter: blur(12px);
+
+            transition: 0.25s;
+        }
+
+        .hobby:hover {
+            transform: translateY(-8px);
+            border-color: #6ee7f988;
+        }
+
+        .emoji {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .hobby h3 {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .hobby p {
+            color: #bfc2dd;
+            line-height: 1.5;
+        }
+
+        /* ЛЮБИМОЕ */
+
+        .favorite {
+            text-align: center;
+            padding: 45px 25px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #a855f733,
+                    #00d9ff22
+                );
+
+            border: 1px solid #ffffff20;
+        }
+
+        .favorite-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .favorite h3 {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .favorite p {
+            font-size: 18px;
+            color: #d5d7e9;
+        }
+
+        /* ФАКТ */
+
+        .fact {
+            text-align: center;
+            padding: 90px 20px;
+        }
+
+        .fact-text {
+            max-width: 750px;
+            margin: auto;
+
+            font-size: clamp(28px, 5vw, 45px);
+            line-height: 1.3;
+            font-weight: 900;
+        }
+
+        .fact-text span {
+            color: #6ee7f9;
+        }
+
+        /* КНОПКА НАВЕРХ */
+
+        .top-button {
+            display: block;
+            width: fit-content;
+
+            margin: 20px auto 60px;
+
+            padding: 13px 22px;
+
+            border-radius: 15px;
+
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+
+            background: #ffffff15;
+            border: 1px solid #ffffff20;
+
+            transition: 0.2s;
+        }
+
+        .top-button:hover {
+            background: #ffffff25;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            padding: 35px;
+            text-align: center;
+            color: #898da9;
+        }
+
+        /* АНИМАЦИИ */
+
+        @keyframes появление {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes стрелка {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(6px);
+            }
+        }
+
+        /* ТЕЛЕФОН */
+
+        @media (max-width: 700px) {
+
+            .hero {
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .hobbies {
+                grid-template-columns: 1fr;
+            }
+
+            .about {
+                padding: 25px;
+            }
+
+            section {
+                padding: 55px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+
+    <header class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="hello">
+                👋 ПРИВЕТ!
+            </div>
+
+            <h1>Май</h1>
+
+            <p class="subtitle">
+                Мне 10 лет, и это моя страница-визитка.
+                Здесь можно узнать немного обо мне
+                и о том, что я люблю.
+            </p>
+
+            <!-- КНОПКА ЛИСТАТЬ ВНИЗ -->
+
+            <a href="#about" class="down-button">
+                Листать вниз
+                <span class="arrow">↓</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- ОБО МНЕ -->
+
+        <section id="about">
+
+            <h2 class="section-title">
+                Обо <span>мне</span>
+            </h2>
+
+            <div class="about">
+
+                <p>
+                    Привет! Меня зовут Май. Мне 10 лет.
+                    Я люблю интересно проводить время,
+                    играть, заниматься футболом и читать.
+                </p>
+
+                <div class="info">
+
+                    <div class="info-card">
+                        <small>Имя</small>
+                        <strong>Май</strong>
+                    </div>
+
+                    <div class="info-card">
+                        <small>Возраст</small>
+                        <strong>10 лет</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- УВЛЕЧЕНИЯ -->
+
+        <section>
+
+            <h2 class="section-title">
+                Мои <span>увлечения</span>
+            </h2>
+
+            <div class="hobbies">
+
+                <div class="hobby">
+
+                    <div class="emoji">⚽</div>
+
+                    <h3>Футбол</h3>
+
+                    <p>
+                        Люблю играть в футбол
+                        и проводить время на поле.
+                    </p>
+
+                </div>
+
+
+                <div class="hobby">
+
+                    <div class="emoji">🎮</div>
+
+                    <h3>Игры</h3>
+
+                    <p>
+                        Мне нравится играть
+                        и открывать новые игры.
+                    </p>
+
+                </div>
+
+
+                <div class="hobby">
+
+                    <div class="emoji">📚</div>
+
+                    <h3>Читать</h3>
+
+                    <p>
+                        Люблю читать интересные истории
+                        и узнавать что-то новое.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ЛЮБИМОЕ -->
+
+        <section>
+
+            <h2 class="section-title">
+                Моё <span>любимое</span>
+            </h2>
+
+            <div class="favorite">
+
+                <div class="favorite-icon">
+                    ⚡📖
+                </div>
+
+                <h3>Гарри Поттер</h3>
+
+                <p>
+                    Одна из моих любимых историй —
+                    мир Гарри Поттера.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ФАКТ -->
+
+        <section class="fact">
+
+            <h2 class="section-title">
+                Интересный <span>факт</span>
+            </h2>
+
+            <p class="fact-text">
+                Мало кто знает, что я
+                <span>люблю слушать.</span> 🎧
+            </p>
+
+        </section>
+
+
+        <!-- КНОПКА НАВЕРХ -->
+
+        <a href="#home" class="top-button">
+            ↑ Вернуться наверх
+        </a>
+
+    </main>
+
+
+    <footer>
+        Сделано Маем ✨
+    </footer>
+
+</body>
+</html>
+```

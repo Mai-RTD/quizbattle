@@ -1,0 +1,219 @@
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site of Mai</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      background: linear-gradient(
+        135deg,
+        #171738,
+        #6f2bee,
+        #1769aa,
+        #00e3f3
+      );
+      background-size: 300% 300%;
+      animation: gradient 12s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      text-align: center;
+    }
+
+    .welcome {
+      margin-bottom: 35px;
+      animation: appear 0.8s ease;
+    }
+
+    .welcome h1 {
+      font-size: clamp(36px, 8vw, 58px);
+      margin: 0 0 14px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+    }
+
+    .welcome p {
+      color: #dedcff;
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 16px;
+    }
+
+    li {
+      animation: appear 0.7s ease both;
+    }
+
+    li:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    li:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+
+    li a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: bold;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    li a:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.19);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    li a:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 4px;
+    }
+
+    .arrow {
+      font-size: 24px;
+      color: #d5d0ff;
+      transition: transform 0.25s ease;
+    }
+
+    li a:hover .arrow {
+      transform: translateX(5px);
+    }
+
+    footer {
+      margin-top: 30px;
+      color: #c7c5ed;
+      font-size: 13px;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 18px;
+      }
+
+      .welcome {
+        margin-bottom: 28px;
+      }
+
+      .welcome p {
+        font-size: 15px;
+      }
+
+      li a {
+        padding: 19px;
+        font-size: 17px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <header class="welcome">
+      <h1>Site of Mai ✨</h1>
+      <p>Welcome to my website!<br>
+        Choose a page and explore.
+      </p>
+    </header>
+
+    <nav aria-label="Main navigation">
+      <ul>
+        <li>
+          <a href="Lessons/01/about.html">
+            <span>👋 About</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="Lessons/02/quizbattle.html">
+            <span>🧠 Quiz</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="game.html">
+            <span>🎮 Game</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <footer>
+      Made with ❤️ by Mai
+    </footer>
+  </main>
+</body>
+</html>

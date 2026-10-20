@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Змейка 🐍</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    padding: 20px; font-family: system-ui, Arial, sans-serif; color: #f8fafc;
+    background: radial-gradient(circle at top left, #293a80 0, transparent 42%),
+                radial-gradient(circle at bottom right, #5b236f 0, transparent 40%), #101528;
+  }
+  .game {
+    width: min(100%, 620px); padding: 24px; border: 1px solid #ffffff22;
+    border-radius: 24px; background: #171e34eF; box-shadow: 0 20px 60px #0005;
+    text-align: center;
+  }
+  h1 { margin: 0 0 6px; font-size: clamp(2rem, 6vw, 3rem); }
+  .subtitle { margin: 0 0 20px; color: #b9c5e8; }
+  .stats { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat { min-width: 110px; padding: 10px 16px; border-radius: 14px; background: #ffffff0d; }
+  .stat small { display: block; color: #b9c5e8; font-size: .8rem; }
+  .stat strong { font-size: 1.35rem; }
+  .settings { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; }
+  label { color: #dce4ff; }
+  select, button {
+    border: 0; border-radius: 12px; padding: 11px 15px; font: inherit; font-weight: 700;
+  }
+  select { color: #f8fafc; background: #283452; border: 1px solid #ffffff20; }
+  button { cursor: pointer; transition: transform .12s, filter .12s; }
+  button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  button:active { transform: scale(.97); }
+  .start { color: #10221a; background: #71f0a4; }
+  .restart { color: #f8fafc; background: #394867; }
+  .board-wrap { position: relative; width: min(100%, 480px); margin: 0 auto; }
+  canvas {
+    display: block; width: 100%; height: auto; aspect-ratio: 1;
+    border-radius: 14px; border: 2px solid #526184; background: #111a2b;
+    image-rendering: pixelated; touch-action: none;
+  }
+  .message { min-height: 28px; margin: 12px 0 2px; color: #d4dcf7; }
+  .hint { color: #9eacd2; font-size: .9rem; margin: 8px 0 0; }
+  .mobile-controls { display: grid; grid-template-columns: repeat(3, 54px); grid-template-rows: repeat(2, 48px); gap: 6px; justify-content: center; margin: 16px auto 0; }
+  .mobile-controls button { background: #2a3858; color: white; font-size: 1.25rem; padding: 0; touch-action: manipulation; }
+  .mobile-controls .up { grid-column: 2; grid-row: 1; }
+  .mobile-controls .left { grid-column: 1; grid-row: 2; }
+  .mobile-controls .down { grid-column: 2; grid-row: 2; }
+  .mobile-controls .right { grid-column: 3; grid-row: 2; }
+  @media (min-width: 700px) { .mobile-controls { display: none; } }
+  @media (max-width: 420px) { .game { padding: 16px 12px; } .stat { min-width: 95px; } }
+</style>
+</head>
+<body>
+<main class="game">
+  <h1>🐍 Змейка</h1>
+  <p class="subtitle">Собирай яблоки и становись длиннее!</p>
+
+  <div class="stats">
+    <div class="stat"><small>Яблоки</small><strong id="score">0</strong></div>
+    <div class="stat"><small>Длина змейки</small><strong id="length">3</strong></div>
+    <div class="stat"><small>Поле</small><strong>16 × 16</strong></div>
+  </div>
+
+  <div class="settings">
+    <label for="speed">Скорость:</label>
+    <select id="speed">
+      <option value="230">Маленькая</option>
+      <option value="150" selected>Средняя</option>
+      <option value="85">Большая</option>
+    </select>
+    <button class="start" id="start">▶ Начать игру</button>
+    <button class="restart" id="restart">↻ Заново</button>
+  </div>
+
+  <div class="board-wrap"><canvas id="board" width="480" height="480" aria-label="Игровое поле змейки"></canvas></div>
+  <p class="message" id="message">Нажми «Начать игру», а затем двигайся стрелками.</p>
+  <p class="hint">Управление: стрелки на клавиатуре или кнопки ниже.</p>
+
+  <div class="mobile-controls" aria-label="Управление змейкой">
+    <button class="up" data-dir="up" aria-label="Вверх">↑</button>
+    <button class="left" data-dir="left" aria-label="Влево">←</button>
+    <button class="down" data-dir="down" aria-label="Вниз">↓</button>
+    <button class="right" data-dir="right" aria-label="Вправо">→</button>
+  </div>
+</main>
+
+<script>
+(() => {
+  const SIZE = 16;
+  const canvas = document.getElementById('board');
+  const ctx = canvas.getContext('2d');
+  const scoreEl = document.getElementById('score');
+  const lengthEl = document.getElementById('length');
+  const messageEl = document.getElementById('message');
+  const speedEl = document.getElementById('speed');
+  const startBtn = document.getElementById('start');
+  const restartBtn = document.getElementById('restart');
+  const cell = canvas.width / SIZE;
+
+  let snake, apple, direction, nextDirection, score, timer, running, gameOver;
+
+  function randomApple() {
+    const free = [];
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        if (!snake.some(part => part.x === x && part.y === y)) free.push({x, y});
+      }
+    }
+    return free.length ? free[Math.floor(Math.random() * free.length)] : null;
+  }
+
+  function reset() {
+    clearInterval(timer);
+    running = false;
+    gameOver = false;
+    score = 0;
+    snake = [{x: 8, y: 8}, {x: 7, y: 8}, {x: 6, y: 8}];
+    direction = {x: 1, y: 0};
+    nextDirection = {x: 1, y: 0};
+    apple = randomApple();
+    scoreEl.textContent = score;
+    lengthEl.textContent = snake.length;
+    messageEl.textContent = 'Нажми «Начать игру», а затем двигайся стрелками.';
+    startBtn.textContent = '▶ Начать игру';
+    draw();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    bg.addColorStop(0, '#14233a'); bg.addColorStop(1, '#0b1426');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = '#2b3b55';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= SIZE; i++) {
+      ctx.beginPath(); ctx.moveTo(i * cell, 0); ctx.lineTo(i * cell, canvas.height); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, i * cell); ctx.lineTo(canvas.width, i * cell); ctx.stroke();
+    }
+
+    if (apple) {
+      // Яблоко — квадратный красный блок, а зелёный хвостик находится в той же клетке.
+      const x = apple.x * cell, y = apple.y * cell;
+      const inset = 5;
+      const appleGrad = ctx.createLinearGradient(x, y, x + cell, y + cell);
+      appleGrad.addColorStop(0, '#ff6571'); appleGrad.addColorStop(.55, '#f43f52'); appleGrad.addColorStop(1, '#c91e3c');
+      ctx.fillStyle = appleGrad;
+      ctx.beginPath(); ctx.roundRect(x + inset, y + inset + 2, cell - inset * 2, cell - inset * 2, 5); ctx.fill();
+      ctx.fillStyle = '#ff9aa2';
+      ctx.beginPath(); ctx.roundRect(x + inset + 3, y + inset + 4, Math.max(4, cell * .18), Math.max(5, cell * .22), 2); ctx.fill();
+      ctx.fillStyle = '#48e879';
+      ctx.beginPath(); ctx.roundRect(x + cell * .49, y + 2, cell * .15, cell * .22, 2); ctx.fill();
+      ctx.fillStyle = '#24b85a';
+      ctx.beginPath(); ctx.moveTo(x + cell * .56, y + cell * .19); ctx.lineTo(x + cell * .77, y + cell * .11); ctx.lineTo(x + cell * .70, y + cell * .25); ctx.closePath(); ctx.fill();
+    }
+
+    snake.forEach((part, index) => {
+      const x = part.x * cell, y = part.y * cell, inset = 2.5;
+      const grad = ctx.createLinearGradient(x, y, x + cell, y + cell);
+      if (index === 0) { grad.addColorStop(0, '#c0ffd1'); grad.addColorStop(.45, '#59f29a'); grad.addColorStop(1, '#16b86c'); }
+      else { grad.addColorStop(0, '#74f5a7'); grad.addColorStop(.5, '#2ed77e'); grad.addColorStop(1, '#119b60'); }
+      ctx.fillStyle = grad;
+      ctx.beginPath(); ctx.roundRect(x + inset, y + inset, cell - inset * 2, cell - inset * 2, 6); ctx.fill();
+      ctx.strokeStyle = index === 0 ? '#b7ffd0' : '#68f5a0'; ctx.lineWidth = 1;
+      ctx.stroke();
+      // Небольшой блик делает сегменты более гладкими и детализированными.
+      ctx.fillStyle = '#ffffff38';
+      ctx.beginPath(); ctx.roundRect(x + 5, y + 4, cell * .30, 3, 2); ctx.fill();
+      if (index === 0) {
+        ctx.fillStyle = '#123b2c';
+        const ex1 = x + cell * .34, ex2 = x + cell * .67, ey = y + cell * .36;
+        ctx.beginPath(); ctx.arc(ex1, ey, 2.4, 0, Math.PI * 2); ctx.arc(ex2, ey, 2.4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(ex1 - .5, ey - .7, .8, 0, Math.PI * 2); ctx.arc(ex2 - .5, ey - .7, .8, 0, Math.PI * 2); ctx.fill();
+      }
+    });
+
+    if (gameOver) {
+      ctx.fillStyle = '#08101dcc';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 32px system-ui';
+      ctx.fillText('Игра окончена!', canvas.width / 2, canvas.height / 2 - 8);
+      ctx.font = '18px system-ui';
+      ctx.fillText('Нажми «Заново», чтобы попробовать ещё', canvas.width / 2, canvas.height / 2 + 28);
+    }
+  }
+
+  function setDirection(name) {
+    if (!running) return;
+    const dirs = {
+      up: {x: 0, y: -1}, down: {x: 0, y: 1},
+      left: {x: -1, y: 0}, right: {x: 1, y: 0}
+    };
+    const wanted = dirs[name];
+    if (!wanted) return;
+    if (wanted.x === -direction.x && wanted.y === -direction.y) return;
+    nextDirection = wanted;
+  }
+
+  function step() {
+    direction = nextDirection;
+    const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+    const eating = apple && head.x === apple.x && head.y === apple.y;
+    const bodyToCheck = eating ? snake : snake.slice(0, -1);
+
+    if (head.x < 0 || head.x >= SIZE || head.y < 0 || head.y >= SIZE ||
+        bodyToCheck.some(part => part.x === head.x && part.y === head.y)) {
+      endGame();
+      return;
+    }
+
+    snake.unshift(head);
+    if (eating) {
+      score++;
+      scoreEl.textContent = score;
+      apple = randomApple();
+      if (!apple) {
+        gameOver = true;
+        running = false;
+        clearInterval(timer);
+        messageEl.textContent = 'Победа! Ты заполнил всё поле!';
+        draw();
+        return;
+      }
+    } else {
+      snake.pop();
+    }
+    lengthEl.textContent = snake.length;
+    draw();
+  }
+
+  function endGame() {
+    running = false;
+    gameOver = true;
+    clearInterval(timer);
+    startBtn.textContent = '▶ Играть снова';
+    messageEl.textContent = `Игра окончена! Ты собрал яблок: ${score}.`;
+    draw();
+  }
+
+  function start() {
+    if (running) return;
+    if (gameOver) reset();
+    running = true;
+    startBtn.textContent = '⏸ Игра идёт';
+    messageEl.textContent = 'Отлично! Собирай яблоки и не врезайся.';
+    clearInterval(timer);
+    timer = setInterval(step, Number(speedEl.value));
+  }
+
+  startBtn.addEventListener('click', () => {
+    if (running) {
+      clearInterval(timer);
+      running = false;
+      startBtn.textContent = '▶ Продолжить';
+      messageEl.textContent = 'Пауза. Нажми «Продолжить», чтобы играть дальше.';
+    } else start();
+  });
+  restartBtn.addEventListener('click', reset);
+  speedEl.addEventListener('change', () => {
+    if (running) {
+      clearInterval(timer);
+      timer = setInterval(step, Number(speedEl.value));
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    const keys = {
+      ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
+      w: 'up', W: 'up', s: 'down', S: 'down', a: 'left', A: 'left', d: 'right', D: 'right'
+    };
+    if (keys[event.key]) {
+      event.preventDefault();
+      setDirection(keys[event.key]);
+    } else if (event.code === 'Space') {
+      event.preventDefault();
+      if (running) {
+        clearInterval(timer); running = false;
+        startBtn.textContent = '▶ Продолжить';
+        messageEl.textContent = 'Пауза. Нажми «Продолжить», чтобы играть дальше.';
+      } else start();
+    }
+  });
+
+  document.querySelectorAll('[data-dir]').forEach(button => {
+    button.addEventListener('click', () => setDirection(button.dataset.dir));
+  });
+
+  reset();
+})();
+</script>
+</body>
+</html>

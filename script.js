@@ -283,8 +283,10 @@
           ? ("Верно! +" + pts + " " + plural(pts) + " " + GOOD_EMO[idx % GOOD_EMO.length])
           : "Верно, но слишком поздно: +0 очков 😅";
       } else {
+        score = Math.max(0, score - 100);
+        setScore(false);
         fbText.className = "fb-text bad";
-        fbText.textContent = BAD[idx % BAD.length];
+        fbText.textContent = "-100 " + BAD[idx % BAD.length];
       }
       fb.classList.add("show");
     }

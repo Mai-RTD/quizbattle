@@ -1543,6 +1543,45 @@ function finish() {
 
   $("btn-menu").addEventListener("click", toMenu);
 
+  // НОВОЕ: функция для запуска легкой игры (динозаврик)
+  function startDinoGame() {
+    var arena = document.getElementById("arena");
+    var score = 0;
+    var timeLeft = 10;
+    var interval;
+    
+    arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>🦖 Динозаврик бежит к 1000!</h2><p id="dino-time" style="font-size:32px;font-weight:bold;color:#e91e63;">Время: 10 сек</p><p id="dino-score" style="font-size:28px;font-weight:bold;color:#4caf50;">Очки: 0 / 1000</p><div style="margin-top:20px;"><button class="big-btn" onclick="answerDino(true)">Правильно ✓</button><button class="big-btn" style="background:#e91e63;margin-left:10px;" onclick="answerDino(false)">Неправильно ✗</button></div></div>';
+    
+    var timeEl = document.getElementById("dino-time");
+    var scoreEl = document.getElementById("dino-score");
+    
+    interval = setInterval(function() {
+      timeLeft--;
+      timeEl.textContent = "Время: " + timeLeft + " сек";
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        endDinoGame(score);
+      }
+    }, 1000);
+    
+    window.answerDino = function(correct) {
+      if (correct) {
+        score += 100;
+        scoreEl.textContent = "Очки: " + score + " / 1000";
+      }
+    };
+    
+    function endDinoGame(finalScore) {
+      delete window.answerDino;
+      var arena = document.getElementById("arena");
+      if (finalScore >= 1000) {
+        arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>🏆 Победа!</h2><p>Ты набрал ' + finalScore + ' очков!</p><p>Динозаврик достиг цели! 🦖</p><button class="big-btn" onclick="location.reload()">В меню</button></div>';
+      } else {
+        arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>😅 Не успел</h2><p>Набрано очков: ' + finalScore + ' из 1000</p><button class="big-btn" onclick="location.reload()">Попробовать снова</button></div>';
+      }
+    }
+  }
+
   buildPresets();
 
   syncSetup();

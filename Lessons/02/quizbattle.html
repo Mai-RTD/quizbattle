@@ -1140,9 +1140,10 @@
 
       } else {
 
+        score = Math.max(0, score - 100);
+        setScore(false);
         fbText.className = "fb-text bad";
-
-        fbText.textContent = BAD[idx % BAD.length];
+        fbText.textContent = "-100 " + BAD[idx % BAD.length];
 
       }
 

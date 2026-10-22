@@ -1575,9 +1575,9 @@ function finish() {
       delete window.answerDino;
       var arena = document.getElementById("arena");
       if (finalScore >= 1000) {
-        arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>🏆 Победа!</h2><p>Ты набрал ' + finalScore + ' очков!</p><p>Динозаврик достиг цели! 🦖</p><button class="big-btn" onclick="location.reload()">В меню</button></div>';
+        arena.innerHTML = "<div style=\"text-align:center;padding:50px;\"><h2>🏆 Победа!</h2><p>Ты набрал " + finalScore + " очков!</p><p>Динозаврик достиг цели! 🦖</p><button class=\"big-btn\" onclick=\"location.reload()\">В меню</button></div>";
       } else {
-        arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>😅 Не успел</h2><p>Набрано очков: ' + finalScore + ' из 1000</p><button class="big-btn" onclick="location.reload()">Попробовать снова</button></div>';
+        arena.innerHTML = "<div style=\"text-align:center;padding:50px;\"><h2>😅 Не успел</h2><p>Набрано очков: " + finalScore + " из 1000</p><button class=\"big-btn\" onclick=\"location.reload()\">Попробовать снова</button></div>";
       }
     }
   }

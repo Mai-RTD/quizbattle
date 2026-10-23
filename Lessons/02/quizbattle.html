@@ -62,7 +62,6 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
 @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 .brick { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 24px; z-index: 1000; }
 .brick-inner { background: #222; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; }
-.dino-canvas { background: #87ceeb; border-radius: 12px; }
 .dino-game { text-align: center; padding: 20px; }
 .dino-game h2 { color: #333; }
 .dino-game p { color: #555; }
@@ -72,6 +71,10 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
 .game-over { text-align: center; padding: 40px; }
 .win-message { color: #4caf50; font-size: 28px; font-weight: bold; }
 .lose-message { color: #e91e63; font-size: 28px; font-weight: bold; }
+.dino-canvas { background: #f7f7f7; border: 2px solid #ccc; border-radius: 8px; }
+.dino-score-display { font-size: 24px; font-weight: bold; color: #333; margin: 10px 0; }
+.dino-timer { font-size: 20px; color: #e91e63; font-weight: bold; }
+.dino-instructions { color: #555; font-size: 14px; margin: 10px 0; }
 </style>
 </head>
 <body>
@@ -146,7 +149,7 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
     if (html) e.innerHTML = html;
     return e;
   }
-  function showScreen(name) {
+  function show(name) {
     document.querySelectorAll(".screen").forEach(function(s) { s.classList.remove("active"); });
     $("screen-" + name).classList.add("active");
   }
@@ -176,11 +179,6 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
       b.addEventListener("click", function() { settings.time = sec; syncSetup(); });
       presetsBox.appendChild(b);
     });
-  }
-  
-  function show(name) {
-    document.querySelectorAll(".screen").forEach(function(s) { s.classList.remove("active"); });
-    $("screen-" + name).classList.add("active");
   }
   
   function clearGame() {
@@ -340,10 +338,12 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
       
       quiz.style.display = "none"; res.style.display = "block";
       
+      // Лёгкий режим: 3+ правильных
       if (correctCount >= 3) {
         setTimeout(function() { startDinoGame(); }, 1500);
       }
       
+      // Сложный режим: ≤2 правильных - теряем жизнь
       if (correctCount <= 2) {
         loseLife();
       }

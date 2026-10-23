@@ -6,41 +6,42 @@
 <title>QuizBattle</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: system-ui, sans-serif; background: #1a1a2e; color: #fff; display: flex; justify-content: center; }
-#app { width: 100%; max-width: 800px; padding: 20px; }
+html, body { height: 100%; font-family: system-ui, sans-serif; background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700, #fff); background-size: 400% 400%; animation: gradient 15s ease infinite; color: #fff; display: flex; justify-content: center; }
+@keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+#app { width: 100%; max-width: 900px; padding: 20px; }
 .screen { display: none; }
 .screen.active { display: block; }
 .center { text-align: center; padding: 40px 20px; }
 .logo { font-size: 60px; margin-bottom: 20px; }
-h1 { font-size: 32px; margin-bottom: 10px; }
-.sub { color: #aaa; margin-bottom: 30px; }
+h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
+.sub { color: #555; margin-bottom: 30px; }
 .setup { max-width: 400px; margin: 0 auto; text-align: left; }
-.setup-title { font-weight: bold; margin-bottom: 10px; }
+.setup-title { font-weight: bold; margin-bottom: 10px; color: #333; }
 .mode-row { display: flex; gap: 10px; margin-bottom: 20px; }
-.mode-btn { flex: 1; padding: 15px; background: #333; border: 2px solid #444; color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; }
-.mode-btn.active { border-color: #e91e63; background: #e91e63; }
+.mode-btn { flex: 1; padding: 20px; background: #333; border: 3px solid #444; color: #fff; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; }
+.mode-btn.active { border-color: #ff6b35; background: #ff6b35; }
 .time-card { background: #222; padding: 20px; border-radius: 12px; }
 .time-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.time-value { background: #e91e63; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+.time-value { background: #ff6b35; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
 #time-range { width: 100%; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px; }
-.chip { padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 20px; cursor: pointer; }
-.chip.active { background: #e91e63; }
-.hint { color: #888; font-size: 14px; margin-top: 20px; line-height: 1.5; }
-.big-btn { width: 100%; padding: 18px; background: #4caf50; border: none; color: #fff; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
+.chip { padding: 10px 20px; background: #333; border: none; color: #fff; border-radius: 20px; cursor: pointer; font-size: 16px; }
+.chip.active { background: #ff6b35; }
+.hint { color: #555; font-size: 14px; margin-top: 20px; line-height: 1.5; }
+.big-btn { width: 100%; padding: 22px; background: #4caf50; border: none; color: #fff; font-size: 24px; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 20px; }
 .big-btn:hover { background: #45a049; }
 .gamebar { margin-bottom: 15px; }
-.small-btn { padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; }
+.small-btn { padding: 10px 20px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; }
 .panel { background: #222; border-radius: 12px; padding: 20px; }
 .topbar { display: flex; justify-content: space-between; margin-bottom: 15px; }
-.pill { background: #333; padding: 8px 16px; border-radius: 20px; font-weight: bold; }
-.pill.score { background: #e91e63; }
+.pill { background: #333; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 16px; }
+.pill.score { background: #ff6b35; }
 .pill.time { min-width: 80px; text-align: center; }
 .progress { height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
 .progress > div { height: 100%; background: #4caf50; transition: width 0.3s; }
-.question-box { background: #fff; color: #000; padding: 20px; border-radius: 12px; font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+.question-box { background: #fff; color: #000; padding: 20px; border-radius: 12px; font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
 .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.ans { padding: 15px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+.ans { padding: 18px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; }
 .ans:hover { background: #444; }
 .ans.c0 { background: #e91e63; }
 .ans.c1 { background: #2196f3; }
@@ -50,21 +51,30 @@ h1 { font-size: 32px; margin-bottom: 10px; }
 .ans.right { background: #4caf50 !important; }
 .ans.wrong { background: #e91e63 !important; }
 .feedback { margin-top: 15px; text-align: center; }
-.fb-text { padding: 15px; border-radius: 8px; font-weight: bold; }
+.fb-text { padding: 15px; border-radius: 8px; font-weight: bold; font-size: 18px; }
 .fb-text.ok { background: #4caf50; }
 .fb-text.bad { background: #e91e63; }
 .result { text-align: center; padding: 20px; }
 .result-score { font-size: 48px; font-weight: bold; color: #e91e63; }
-.result-title { font-size: 24px; margin: 15px 0; }
-.result-text { color: #aaa; }
+.result-title { font-size: 24px; margin: 15px 0; color: #333; }
+.result-text { color: #555; }
 .confetti { position: fixed; top: -20px; width: 10px; height: 15px; animation: fall 3s linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 .brick { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 24px; z-index: 1000; }
 .brick-inner { background: #222; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; }
+.dino-canvas { background: #87ceeb; border-radius: 12px; }
+.dino-game { text-align: center; padding: 20px; }
+.dino-game h2 { color: #333; }
+.dino-game p { color: #555; }
+.dino-btn { padding: 15px 30px; background: #4caf50; border: none; color: #fff; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+.dino-btn:hover { background: #45a049; }
+.lives { position: fixed; top: 20px; right: 20px; font-size: 24px; color: #333; background: #fff; padding: 10px 15px; border-radius: 10px; z-index: 100; }
 </style>
 </head>
 <body>
 <div id="app">
+  <div class="lives" id="lives-display">❤️❤️❤️</div>
+  
   <!-- Стартовый экран -->
   <section id="screen-start" class="screen active">
     <div class="center">
@@ -89,7 +99,7 @@ h1 { font-size: 32px; margin-bottom: 10px; }
         </div>
       </div>
       
-      <p class="hint">За верный ответ: до 1000 очков. Ошибка = -100 очков (мин. 0).<br>3+ правильных = лёгкая игра. ≤2 правильных = теряем жизнь. 0 жизней = кирпич.</p>
+      <p class="hint">За верный ответ: до 1000 очков. Ошибка = -100 очков (мин. 0).<br>3+ правильных = лёгкая игра (динозаврик). ≤2 правильных = теряем жизнь. 0 жизней = кирпич.</p>
       <button class="big-btn" id="btn-start" type="button">Поехали!</button>
     </div>
   </section>
@@ -104,7 +114,6 @@ h1 { font-size: 32px; margin-bottom: 10px; }
 
 <script>
 (function() {
-  // ===== Данные =====
   var QUESTIONS = [
     { q: "Какой мой любимый цвет?", a: ["Красный", "Синий", "Чёрный", "Оранжевый"], c: 3 },
     { q: "Какая моя любимая аудиокнига?", a: ["Гарри Поттер", "Как приручить дракона", "Приключения семейки из Шербура", "Алиса в Стране чудес"], c: 0 },
@@ -117,9 +126,17 @@ h1 { font-size: 32px; margin-bottom: 10px; }
   var SHAPES = ["▲", "◆", "●", "■"];
   var BAD_TEXTS = ["Не угадал 😅", "Мимо! 💪", "Почти 🙈", "Не-а 🤷", "Увы 😄"];
   
-  var lives = parseInt(localStorage.getItem("quizbattle_lives") || "10", 10);
+  // 3 жизни по умолчанию
+  var lives = parseInt(localStorage.getItem("quizbattle_lives") || "3", 10);
   
-  // ===== Утилиты =====
+  function updateLivesDisplay() {
+    var el = document.getElementById("lives-display");
+    if (el) {
+      el.textContent = "❤️".repeat(Math.max(0, lives));
+      if (lives <= 0) el.textContent = "💀";
+    }
+  }
+  
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, html) {
     var e = document.createElement(tag);
@@ -133,7 +150,6 @@ h1 { font-size: 32px; margin-bottom: 10px; }
   }
   function fmtTime(s) { return s < 60 ? s + " сек" : Math.floor(s/60) + " мин " + (s%60) + " сек"; }
   
-  // ===== Элементы =====
   var arena = $("arena");
   var banner = $("banner");
   var rangeEl = $("time-range");
@@ -143,13 +159,10 @@ h1 { font-size: 32px; margin-bottom: 10px; }
   var settings = { mode: "solo", time: 30 };
   var PRESETS = [5, 10, 20, 30, 60, 120, 300];
   
-  // ===== Настройки =====
   function syncSetup() {
     rangeEl.value = settings.time;
     $("time-value").textContent = fmtTime(settings.time);
-    document.querySelectorAll(".chip").forEach(function(c) {
-      c.classList.toggle("active", parseInt(c.dataset.sec) === settings.time);
-    });
+    document.querySelectorAll(".chip").forEach(function(c) { c.classList.toggle("active", parseInt(c.dataset.sec) === settings.time); });
     $("btn-mode-solo").classList.toggle("active", settings.mode === "solo");
     $("btn-mode-duel").classList.toggle("active", settings.mode === "duel");
   }
@@ -157,14 +170,12 @@ h1 { font-size: 32px; margin-bottom: 10px; }
   function buildPresets() {
     PRESETS.forEach(function(sec) {
       var b = el("button", "chip", fmtTime(sec));
-      b.type = "button";
-      b.dataset.sec = sec;
+      b.type = "button"; b.dataset.sec = sec;
       b.addEventListener("click", function() { settings.time = sec; syncSetup(); });
       presetsBox.appendChild(b);
     });
   }
   
-  // ===== Экраны =====
   function show(name) {
     document.querySelectorAll(".screen").forEach(function(s) { s.classList.remove("active"); });
     $("screen-" + name).classList.add("active");
@@ -179,14 +190,13 @@ h1 { font-size: 32px; margin-bottom: 10px; }
   
   function toMenu() { clearGame(); show("start"); }
   
-  // ===== Панель игрока =====
   function createPanel(cfg) {
     var N = QUESTIONS.length;
     var LIMIT_MS = (cfg.timeLimit || 30) * 1000;
     var idx = 0, score = 0, correct = 0, locked = false, done = false;
     var timerId = null, deadline = 0;
     
-    var root = el("div", "panel" + (cfg.cls ? " " + cfg.cls : ""));
+    var root = el("div", "panel");
     if (cfg.color) root.style.border = "3px solid " + cfg.color;
     
     var quiz = el("div");
@@ -202,7 +212,8 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     top.appendChild(counter); top.appendChild(timePill); top.appendChild(scoreEl);
     
     var prog = el("div", "progress");
-    prog.appendChild(el("div"));
+    var progBar = el("div");
+    prog.appendChild(progBar);
     var tbar = el("div", "timebar");
     var timeFill = el("div");
     var timeLabel = el("span", "timelabel");
@@ -216,7 +227,7 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     nextBtn.addEventListener("click", nextQuestion);
     fb.appendChild(fbText); fb.appendChild(nextBtn);
     
-    quiz.appendChild(top); quiz.appendChild(prog); 
+    quiz.appendChild(top); quiz.appendChild(prog);
     quiz.appendChild(tbar); quiz.appendChild(qbox); quiz.appendChild(answers); quiz.appendChild(fb);
     
     var res = el("div", "result");
@@ -238,13 +249,13 @@ h1 { font-size: 32px; margin-bottom: 10px; }
       locked = false;
       var item = QUESTIONS[idx];
       counter.textContent = "Вопрос " + (idx+1) + " из " + N;
-      quiz.querySelector(".progress > div").style.width = (idx/N*100) + "%";
+      progBar.style.width = (idx/N*100) + "%";
       qbox.textContent = item.q;
       fb.style.display = "none";
       
       answers.innerHTML = "";
       item.a.forEach(function(ans, i) {
-        var b = el("button", "ans c" + i, "<span>" + SHAPES[i] + "</span> " + ans);
+        var b = el("button", "ans c" + i, SHAPES[i] + " " + ans);
         b.type = "button";
         b.addEventListener("click", function() { choose(i); });
         answers.appendChild(b);
@@ -310,20 +321,36 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     }
     function finish() {
       done = true; clearInterval(timerId);
-      if (cfg.onFinish) cfg.onFinish(score, correct);
-      var r = pickResult(correct);
+      var correctCount = correct;
+      
+      if (cfg.onFinish) cfg.onFinish(score, correctCount);
+      
+      var rScore = root.querySelector(".result-score");
+      var rTitle = root.querySelector(".result-title");
+      var rText = root.querySelector(".result-text");
+      
       rScore.textContent = score;
-      rTitle.textContent = r.title;
-      rText.textContent = r.text;
+      if (correctCount >= 5) { rTitle.textContent = "🏆 Супер!"; rText.textContent = "Ты знаешь обо всём!"; }
+      else if (correctCount >= 4) { rTitle.textContent = "🥳 Отлично!"; rText.textContent = "Всего одна ошибка!"; }
+      else if (correctCount >= 3) { rTitle.textContent = "😎 Хорошо!"; rText.textContent = "Больше половины верно!"; }
+      else if (correctCount >= 2) { rTitle.textContent = "🤔 Знакомимся"; rText.textContent = "Есть над чем поработать"; }
+      else { rTitle.textContent = "🙈 Не знаю"; rText.textContent = "Попробуй ещё раз!"; }
+      
       quiz.style.display = "none"; res.style.display = "block";
+      
+      // Лёгкий режим: 3+ правильных
+      if (correctCount >= 3) {
+        setTimeout(function() {
+          startDinoGame();
+        }, 1500);
+      }
+      
+      // Сложный режим: ≤2 правильных - теряем жизнь
+      if (correctCount <= 2) {
+        loseLife();
+      }
     }
-    function pickResult(correct) {
-      if (correct >= 5) return { title: "🏆 Супер!", text: "Ты знаешь обо всём!" };
-      if (correct >= 4) return { title: "🥳 Отлично!", text: "Всего одна ошибка!" };
-      if (correct >= 3) return { title: "😎 Хорошо!", text: "Больше половины верно!" };
-      if (correct >= 2) return { title: "🤔 Знакомимся", text: "Есть над чем поработать" };
-      return { title: "🙈 Не знаю", text: "Попробуй ещё раз!" };
-    }
+    
     render();
     return {
       root: root,
@@ -334,7 +361,48 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     };
   }
   
-  // ===== Запуск игры =====
+  function loseLife() {
+    lives--;
+    localStorage.setItem("quizbattle_lives", lives);
+    updateLivesDisplay();
+    if (lives <= 0) {
+      showBrick();
+    } else {
+      banner.innerHTML = '<div style="color:#e91e63;padding:15px;text-align:center;">💔 Жизнь потеряна! Осталось: ' + lives + ' жизней.</div>';
+      banner.classList.add("show");
+    }
+  }
+  
+  function showBrick() {
+    document.body.innerHTML = '<div class="brick"><div class="brick-inner"><h2>🚫 Страница заблокирована</h2><p>Это должно быть удалено</p><p>Жизни закончились (0/3)</p><button class="big-btn" onclick="location.reload()" style="margin-top:20px;">Обновить страницу</button></div></div>';
+  }
+  
+  function startDinoGame() {
+    var score = 0, timeLeft = 60;
+    arena.innerHTML = '<div class="dino-game"><h2>🦖 Динозаврик: набери 1000 очков за 1 минуту!</h2><p id="dino-time" style="font-size:32px;color:#e91e63;">Время: 60 сек</p><p id="dino-score" style="font-size:28px;color:#4caf50;">Очки: 0 / 1000</p><div style="margin-top:20px;"><button class="dino-btn" onclick="window.answerDino(true)">Правильно ✓</button><button class="dino-btn" style="background:#e91e63;margin-left:10px;" onclick="answerDino(false)">Неправильно ✗</button></div></div>';
+    var timeEl = document.getElementById("dino-time");
+    var scoreEl = document.getElementById("dino-score");
+    
+    var interval = setInterval(function() {
+      timeLeft--;
+      document.getElementById("dino-time").textContent = "Время: " + timeLeft + " сек";
+      if (timeLeft <= 0) { clearInterval(interval); endDinoGame(score); }
+    }, 1000);
+    
+    window.answerDino = function(correct) {
+      if (correct) { score += 100; document.getElementById("dino-score").textContent = "Очки: " + score + " / 1000"; }
+    };
+    
+    function endDinoGame(finalScore) {
+      delete window.answerDino;
+      if (finalScore >= 1000) {
+        arena.innerHTML = '<div class="dino-game"><h2>🏆 Победа! ' + finalScore + ' очков</h2><p>Динозаврик достиг цели! 🦖</p><button class="big-btn" onclick="location.reload()">Попробовать заново</button></div>';
+      } else {
+        arena.innerHTML = '<div class="dino-game"><h2>😅 Не успел: ' + finalScore + '/1000</h2><button class="big-btn" onclick="location.reload()">Попробовать снова</button></div>';
+      }
+    }
+  }
+  
   function startGame() {
     clearGame();
     var mode = settings.mode;
@@ -353,58 +421,16 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     var p = panels[0];
     var correctCount = p.getCorrect();
     
-    // Лёгкий режим: 3+ правильных
     if (correctCount >= 3) {
-      startDinoGame();
+      setTimeout(function() { startDinoGame(); }, 1500);
       return;
     }
     
-    // Сложный режим: ≤2 правильных
     if (correctCount <= 2) {
       loseLife();
     }
   }
   
-  function loseLife() {
-    lives--;
-    localStorage.setItem("quizbattle_lives", lives);
-    if (lives <= 0) {
-      showBrick();
-    } else {
-      banner.innerHTML = '<div style="color:#e91e63;padding:15px;text-align:center;">💔 Жизнь потеряна! Осталось: ' + lives + ' жизней.</div>';
-      banner.classList.add("show");
-    }
-  }
-  
-  function showBrick() {
-    document.body.innerHTML = '<div class="brick"><div class="brick-inner"><h2>🚫 Страница заблокирована</h2><p>Это должно быть удалено</p><p>Жизни закончились (0/10)</p><button class="big-btn" onclick="location.reload()" style="margin-top:20px;">Обновить страницу</button></div></div>';
-  }
-  
-  function startDinoGame() {
-    var score = 0, timeLeft = 10;
-    arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>🦖 Динозаврик: набери 1000 очков за 10 сек!</h2><p id="dino-time" style="font-size:32px;color:#e91e63;">Время: 10 сек</p><p id="dino-score" style="font-size:28px;color:#4caf50;">Очки: 0 / 1000</p><div style="margin-top:20px;"><button class="big-btn" onclick="window.answerDino(true)">Правильно ✓</button><button class="big-btn" style="background:#e91e63;margin-left:10px;" onclick="answerDino(false)">Неправильно ✗</button></div>';
-    var timeEl = document.getElementById("dino-time");
-    var scoreEl = document.getElementById("dino-score");
-    var score = 0, timeLeft = 10;
-    var interval = setInterval(function() {
-      timeLeft--;
-      document.getElementById("dino-time").textContent = "Время: " + timeLeft + " сек";
-      if (timeLeft <= 0) { clearInterval(interval); endDinoGame(score); }
-    }, 1000);
-    window.answerDino = function(correct) {
-      if (correct) { score += 100; document.getElementById("dino-score").textContent = "Очки: " + score + " / 1000"; }
-    };
-    function endDinoGame(score) {
-      delete window.answerDino;
-      if (score >= 1000) {
-        arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>🏆 Победа! ' + score + ' очков</h2><button class="big-btn" onclick="location.reload()">В меню</button></div>';
-      } else {
-        arena.innerHTML = '<div style="text-align:center;padding:50px;"><h2>😅 Не успел: ' + score + '/1000</h2><button class="big-btn" onclick="location.reload()">Попробовать снова</button></div>';
-      }
-    }
-  }
-  
-  // Дуэль
   var duelFinished = 0, duelResults = [];
   function checkDuel() {
     duelFinished++;
@@ -417,7 +443,6 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     }
   }
   
-  // ===== Инициализация =====
   function syncSetup() {
     rangeEl.value = settings.time; timeValueEl.textContent = fmtTime(settings.time);
     document.querySelectorAll(".chip").forEach(function(c) { c.classList.toggle("active", parseInt(c.dataset.sec) === settings.time); });
@@ -434,7 +459,6 @@ h1 { font-size: 32px; margin-bottom: 10px; }
     });
   }
   
-  // Event listeners
   rangeEl.addEventListener("input", function() { settings.time = Math.min(300, Math.max(5, parseInt(this.value)||30)); syncSetup(); });
   $("btn-mode-solo").addEventListener("click", function() { settings.mode = "solo"; syncSetup(); });
   $("btn-mode-duel").addEventListener("click", function() { settings.mode = "duel"; syncSetup(); });
@@ -444,6 +468,7 @@ h1 { font-size: 32px; margin-bottom: 10px; }
   
   buildPresets();
   syncSetup();
+  updateLivesDisplay();
   
 })();
 </script>

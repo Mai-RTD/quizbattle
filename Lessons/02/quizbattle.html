@@ -383,12 +383,21 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
     
     var interval = setInterval(function() {
       timeLeft--;
-      document.getElementById("dino-time").textContent = "Время: " + timeLeft + " сек";
+      var dinoTimeEl = document.getElementById("dino-time");
+      if (dinoTimeEl) {
+        dinoTimeEl.textContent = "Время: " + timeLeft + " сек";
+      }
       if (timeLeft <= 0) { clearInterval(interval); endDinoGame(score); }
     }, 1000);
     
     window.answerDino = function(correct) {
-      if (correct) { score += 100; document.getElementById("dino-score").textContent = "Очки: " + score + " / 1000"; }
+      if (correct) { 
+        score += 100; 
+        var dinoScoreEl = document.getElementById("dino-score");
+        if (dinoScoreEl) {
+          dinoScoreEl.textContent = "Очки: " + score + " / 1000";
+        }
+      }
     };
     
     function endDinoGame(finalScore) {

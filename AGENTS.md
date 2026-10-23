@@ -4,6 +4,7 @@
 - Git already initialized and connected to `https://github.com/Mai-RTD/quizbattle.git`
 - Branch `main` is up to date with origin
 - No `.gitignore` — all project files are tracked
+- **Agent mode**: This project uses **build** mode for implementing changes (not Plan mode). I make code changes and improvements.
 
 ## Project structure (root only)
 | File | Purpose |
@@ -18,6 +19,13 @@
 - `git config --global user.name "Mai-RTD"` and `git config --global user.email "mai.zonov@gmail.com"` are already set
 - `git status` shows branch up to date with `origin/main` — push succeeded without errors
 - No passwords, keys, phones, or addresses found in any source file
+
+## Development rules
+1. **Agent mode**: This project uses **build** mode for implementing changes (not Plan mode). I make code changes and improvements.
+2. **Always test**: When I change anything in the project, I run the project to verify it works. I add new tests for new functionality.
+3. **Working language**: Russian is the working language for communication between me and agents.
+4. **Explain changes**: After any modification, I explain what I did in a few sentences. If needed, I can provide more details on request.
+5. **No push without instruction**: I do not execute `git push` without your direct explicit request. All commits are local until you confirm.
 
 ## How to run / verify
 - Open `index.html.html` in a browser to launch the quiz portal

@@ -66,9 +66,12 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
 .dino-game { text-align: center; padding: 20px; }
 .dino-game h2 { color: #333; }
 .dino-game p { color: #555; }
-.dino-btn { padding: 15px 30px; background: #4caf50; border: none; color: #fff; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+.dino-btn { padding: 15px 30px; background: #4caf50; border: none; color: #fff; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 5px; }
 .dino-btn:hover { background: #45a049; }
 .lives { position: fixed; top: 20px; right: 20px; font-size: 24px; color: #333; background: #fff; padding: 10px 15px; border-radius: 10px; z-index: 100; }
+.game-over { text-align: center; padding: 40px; }
+.win-message { color: #4caf50; font-size: 28px; font-weight: bold; }
+.lose-message { color: #e91e63; font-size: 28px; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -126,7 +129,6 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
   var SHAPES = ["▲", "◆", "●", "■"];
   var BAD_TEXTS = ["Не угадал 😅", "Мимо! 💪", "Почти 🙈", "Не-а 🤷", "Увы 😄"];
   
-  // 3 жизни по умолчанию
   var lives = parseInt(localStorage.getItem("quizbattle_lives") || "3", 10);
   
   function updateLivesDisplay() {
@@ -338,14 +340,10 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
       
       quiz.style.display = "none"; res.style.display = "block";
       
-      // Лёгкий режим: 3+ правильных
       if (correctCount >= 3) {
-        setTimeout(function() {
-          startDinoGame();
-        }, 1500);
+        setTimeout(function() { startDinoGame(); }, 1500);
       }
       
-      // Сложный режим: ≤2 правильных - теряем жизнь
       if (correctCount <= 2) {
         loseLife();
       }

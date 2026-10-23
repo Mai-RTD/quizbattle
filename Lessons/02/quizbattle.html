@@ -6,9 +6,8 @@
 <title>QuizBattle</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: system-ui, sans-serif; background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700, #fff); background-size: 400% 400%; animation: gradient 15s ease infinite; color: #fff; display: flex; justify-content: center; }
-@keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-#app { width: 100%; max-width: 900px; padding: 20px; }
+html, body { height: 100%; font-family: system-ui, sans-serif; background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700); color: #fff; display: flex; justify-content: center; }
+#app { width: 100%; max-width: 800px; padding: 20px; }
 .screen { display: none; }
 .screen.active { display: block; }
 .center { text-align: center; padding: 40px 20px; }
@@ -18,30 +17,29 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
 .setup { max-width: 400px; margin: 0 auto; text-align: left; }
 .setup-title { font-weight: bold; margin-bottom: 10px; color: #333; }
 .mode-row { display: flex; gap: 10px; margin-bottom: 20px; }
-.mode-btn { flex: 1; padding: 20px; background: #333; border: 3px solid #444; color: #fff; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; }
+.mode-btn { flex: 1; padding: 15px; background: #333; border: 2px solid #444; color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; }
 .mode-btn.active { border-color: #ff6b35; background: #ff6b35; }
 .time-card { background: #222; padding: 20px; border-radius: 12px; }
 .time-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .time-value { background: #ff6b35; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
 #time-range { width: 100%; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px; }
-.chip { padding: 10px 20px; background: #333; border: none; color: #fff; border-radius: 20px; cursor: pointer; font-size: 16px; }
+.chip { padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 20px; cursor: pointer; }
 .chip.active { background: #ff6b35; }
 .hint { color: #555; font-size: 14px; margin-top: 20px; line-height: 1.5; }
-.big-btn { width: 100%; padding: 22px; background: #4caf50; border: none; color: #fff; font-size: 24px; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 20px; }
-.big-btn:hover { background: #45a049; }
+.big-btn { width: 100%; padding: 20px; background: #4caf50; border: none; color: #fff; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
 .gamebar { margin-bottom: 15px; }
-.small-btn { padding: 10px 20px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; }
+.small-btn { padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; }
 .panel { background: #222; border-radius: 12px; padding: 20px; }
 .topbar { display: flex; justify-content: space-between; margin-bottom: 15px; }
-.pill { background: #333; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 16px; }
+.pill { background: #333; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; }
 .pill.score { background: #ff6b35; }
 .pill.time { min-width: 80px; text-align: center; }
 .progress { height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
 .progress > div { height: 100%; background: #4caf50; transition: width 0.3s; }
-.question-box { background: #fff; color: #000; padding: 20px; border-radius: 12px; font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+.question-box { background: #fff; color: #000; padding: 20px; border-radius: 12px; font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
 .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.ans { padding: 18px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; }
+.ans { padding: 15px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
 .ans:hover { background: #444; }
 .ans.c0 { background: #e91e63; }
 .ans.c1 { background: #2196f3; }
@@ -62,6 +60,7 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
 @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 .brick { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; color: #fff; display: flex; justify-content: center; align-items: center; font-size: 24px; z-index: 1000; }
 .brick-inner { background: #222; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; }
+.dino-canvas { background: #f7f7f7; border: 2px solid #ccc; border-radius: 8px; }
 .dino-game { text-align: center; padding: 20px; }
 .dino-game h2 { color: #333; }
 .dino-game p { color: #555; }
@@ -71,17 +70,12 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
 .game-over { text-align: center; padding: 40px; }
 .win-message { color: #4caf50; font-size: 28px; font-weight: bold; }
 .lose-message { color: #e91e63; font-size: 28px; font-weight: bold; }
-.dino-canvas { background: #f7f7f7; border: 2px solid #ccc; border-radius: 8px; }
-.dino-score-display { font-size: 24px; font-weight: bold; color: #333; margin: 10px 0; }
-.dino-timer { font-size: 20px; color: #e91e63; font-weight: bold; }
-.dino-instructions { color: #555; font-size: 14px; margin: 10px 0; }
 </style>
 </head>
 <body>
 <div id="app">
   <div class="lives" id="lives-display">❤️❤️❤️</div>
   
-  <!-- Стартовый экран -->
   <section id="screen-start" class="screen active">
     <div class="center">
       <div class="logo">🎮</div>
@@ -110,7 +104,6 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
     </div>
   </section>
 
-  <!-- Игровой экран -->
   <section id="screen-game" class="screen">
     <div class="gamebar"><button class="small-btn" id="btn-menu" type="button">← Меню</button></div>
     <div id="banner"></div>
@@ -149,7 +142,7 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
     if (html) e.innerHTML = html;
     return e;
   }
-  function show(name) {
+  function showScreen(name) {
     document.querySelectorAll(".screen").forEach(function(s) { s.classList.remove("active"); });
     $("screen-" + name).classList.add("active");
   }
@@ -179,6 +172,11 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
       b.addEventListener("click", function() { settings.time = sec; syncSetup(); });
       presetsBox.appendChild(b);
     });
+  }
+  
+  function show(name) {
+    document.querySelectorAll(".screen").forEach(function(s) { s.classList.remove("active"); });
+    $("screen-" + name).classList.add("active");
   }
   
   function clearGame() {
@@ -338,12 +336,10 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
       
       quiz.style.display = "none"; res.style.display = "block";
       
-      // Лёгкий режим: 3+ правильных
       if (correctCount >= 3) {
         setTimeout(function() { startDinoGame(); }, 1500);
       }
       
-      // Сложный режим: ≤2 правильных - теряем жизнь
       if (correctCount <= 2) {
         loseLife();
       }
@@ -384,20 +380,12 @@ h1 { font-size: 36px; margin-bottom: 10px; color: #333; }
     var interval = setInterval(function() {
       timeLeft--;
       var dinoTimeEl = document.getElementById("dino-time");
-      if (dinoTimeEl) {
-        dinoTimeEl.textContent = "Время: " + timeLeft + " сек";
-      }
+      if (dinoTimeEl) dinoTimeEl.textContent = "Время: " + timeLeft + " сек";
       if (timeLeft <= 0) { clearInterval(interval); endDinoGame(score); }
     }, 1000);
     
     window.answerDino = function(correct) {
-      if (correct) { 
-        score += 100; 
-        var dinoScoreEl = document.getElementById("dino-score");
-        if (dinoScoreEl) {
-          dinoScoreEl.textContent = "Очки: " + score + " / 1000";
-        }
-      }
+      if (correct) { score += 100; var dinoScoreEl = document.getElementById("dino-score"); if (dinoScoreEl) dinoScoreEl.textContent = "Очки: " + score + " / 1000"; }
     };
     
     function endDinoGame(finalScore) {
